@@ -2,8 +2,10 @@ package com.example.mywaifu
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import retrofit2.Call
@@ -19,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     private var imgUrl: String? = null
     private lateinit var imageView: ImageView
     private lateinit var getWaifu: Button
+    private lateinit var progressBar: ProgressBar
 
     object RetrofitClient {
         private const val BASE_URL = "https://api.waifu.pics/"
@@ -39,6 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         imageView = findViewById(R.id.imageView)
         getWaifu = findViewById(R.id.getWaifu)
+        progressBar = findViewById(R.id.progressBar)
 
         getWaifu.setOnClickListener {
             getMyWaifu("nsfw", "waifu")
@@ -46,9 +50,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getMyWaifu(type: String, category: String) {
+
+        progressBar.visibility = View.VISIBLE
+
         val call = RetrofitClient.waifuApiService.getSingleImage(type, category)
         call.enqueue(object : Callback<WaifuResponse> {
             override fun onResponse(call: Call<WaifuResponse>, response: Response<WaifuResponse>) {
+
+                progressBar.visibility = View.GONE
+
                 if (response.isSuccessful) {
                     // Получаем URL изображения
                     imgUrl = response.body()?.url
@@ -66,6 +76,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<WaifuResponse>, t: Throwable) {
+                progressBar.visibility = View.GONE
                 Log.d(TAG, "Ошибка сети: ${t.message}")
             }
         })
