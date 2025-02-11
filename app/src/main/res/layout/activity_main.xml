@@ -7,44 +7,100 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <!-- Guideline для разделения верхней и нижней частей экрана -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideLine"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.9" />
+        app:layout_constraintGuide_percent="0.85" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone" />
 
+    <!-- ImageView для отображения изображения -->
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
 
         app:layout_constraintBottom_toTopOf="@+id/guideLine"
-        app:layout_constraintDimensionRatio="h, 1:1"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintDimensionRatio="h, 1:1"
         tools:src="@tools:sample/backgrounds/scenic" />
 
-    <Button
-        android:id="@+id/getWaifu"
+    <!-- Прогресс бар -->
+    <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp" />
+
+    <!-- Контейнер для кнопок снизу -->
+    <LinearLayout
+        android:id="@+id/bottomButtonsLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="4"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Кнопка 1 -->
+
+        <!-- Кнопка 2 -->
+        <Button
+            android:id="@+id/getWaifu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="получить кошко-девочку"
+            app:icon="@drawable/kissing" />
+
+        <Button
+            android:id="@+id/getWaifu2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="кусь"
+            app:icon="@drawable/cat"
+        android:gravity="center"
+        android:padding="10dp" />
+
+        <!-- Кнопка 3 -->
+        <Button
+            android:id="@+id/getWaifu3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="вау"
+            app:icon="@drawable/chat"
+        android:gravity="center"
+
+
+        android:padding="10dp" />
+
+        <!-- Кнопка 4 -->
+
+    </LinearLayout>
+
+    <!-- TextView для версии -->
+    <TextView
+        android:id="@+id/version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="v0.02"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guideLine"
-        android:text="Получить вайфу"/>
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="10dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

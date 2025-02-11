@@ -21,6 +21,8 @@ class MainActivity : AppCompatActivity() {
     private var imgUrl: String? = null
     private lateinit var imageView: ImageView
     private lateinit var getWaifu: Button
+    private lateinit var getWaifu2: Button
+    private lateinit var getWaifu3: Button
     private lateinit var progressBar: ProgressBar
 
     object RetrofitClient {
@@ -42,11 +44,23 @@ class MainActivity : AppCompatActivity() {
 
         imageView = findViewById(R.id.imageView)
         getWaifu = findViewById(R.id.getWaifu)
+        getWaifu2 = findViewById(R.id.getWaifu2)
+        getWaifu3 = findViewById(R.id.getWaifu3)
         progressBar = findViewById(R.id.progressBar)
 
         getWaifu.setOnClickListener {
-            getMyWaifu("nsfw", "waifu")
+            getMyWaifu("sfw", "dance")
         }
+        getWaifu2.setOnClickListener {
+            getMyWaifu("nsfw", "neko")
+        }
+
+        getWaifu3.setOnClickListener {
+            getMyWaifu("nsfw", "blowjob")
+        }
+
+
+
     }
 
     private fun getMyWaifu(type: String, category: String) {

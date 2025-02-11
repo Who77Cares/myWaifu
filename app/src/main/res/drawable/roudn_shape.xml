@@ -1,0 +1,15 @@
+<!-- res/drawable/circle_shape.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval"> <!-- oval создаёт круглую форму -->
+
+    <!-- Цвет фона -->
+    <solid android:color="#f7729c" /> <!-- #fdd4ff или-->
+
+    <!-- Размер (опционально) -->
+    <size
+        android:width="100dp"
+        android:height="100dp" />
+
+    <!-- Обводка (опционально) -->
+
+</shape>
