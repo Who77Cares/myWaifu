@@ -15,6 +15,20 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.85" />
 
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+
+    android:id="@+id/savedText"
+    android:text="777"
+
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintBottom_toTopOf="@+id/imageView" />
+
+
 
     <!-- ImageView для отображения изображения -->
     <ImageView

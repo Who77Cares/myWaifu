@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import retrofit2.Call
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var getWaifu2: Button
     private lateinit var getWaifu3: Button
     private lateinit var progressBar: ProgressBar
+    private lateinit var savedText: TextView
 
     object RetrofitClient {
         private const val BASE_URL = "https://api.waifu.pics/"
@@ -47,16 +49,17 @@ class MainActivity : AppCompatActivity() {
         getWaifu2 = findViewById(R.id.getWaifu2)
         getWaifu3 = findViewById(R.id.getWaifu3)
         progressBar = findViewById(R.id.progressBar)
+        savedText = findViewById(R.id.savedText)
 
         getWaifu.setOnClickListener {
             getMyWaifu("sfw", "dance")
         }
         getWaifu2.setOnClickListener {
-            getMyWaifu("nsfw", "neko")
+            getMyWaifu("sfw", "awoo")
         }
 
         getWaifu3.setOnClickListener {
-            getMyWaifu("nsfw", "blowjob")
+            getMyWaifu("sfw", "cringe")
         }
 
 
@@ -84,6 +87,10 @@ class MainActivity : AppCompatActivity() {
                             .load(url)
                             .into(imageView)
                     }
+
+                    savedText.text = imgUrl?.substringAfterLast('/')
+
+
                 } else {
                     Log.d(TAG, "Ошибка: ${response.code()}")
                 }
