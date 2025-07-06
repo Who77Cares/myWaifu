@@ -2,4 +2,35 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="warm_red">#FFE57373</color>       <!-- Тёплый красный -->
+    <color name="warm_orange">#FFFFB74D</color>    <!-- Светло-оранжевый -->
+    <color name="warm_yellow">#FFFFF176</color>    <!-- Мягкий жёлтый -->
+    <color name="warm_pink">#FFF8BBD0</color>      <!-- Светло-розовый -->
+    <color name="peach">#FFFFCCBC</color>          <!-- Персиковый -->
+    <color name="coral">#FFFF8A65</color>          <!-- Коралловый -->
+    <color name="light_terracotta">#FFE0B2A9</color> <!-- Светлый терракотовый -->
+    <color name="sunset">#FFFFAB91</color>         <!-- Цвет заката -->
+    <color name="warm_beige">#FFFFE0B2</color>     <!-- Тёплый бежевый -->
+    <color name="soft_cinnamon">#FFD7CCC8</color>
+
+    <!-- 🍭 Яркие / насыщенные -->
+    <color name="bright_red">#FFD32F2F</color>       <!-- Ярко-красный -->
+    <color name="bright_orange">#FFFF6D00</color>    <!-- Апельсиновый -->
+
+    <!-- 🪻 Холодные / спокойные -->
+    <color name="cool_blue">#FF448AFF</color>        <!-- Лазурный -->
+    <color name="cool_purple">#FF9575CD</color>      <!-- Лавандовый -->
+
+    <!-- 🌿 Природные / землистые -->
+    <color name="forest_green">#FF388E3C</color>     <!-- Лесной зелёный -->
+    <color name="earth_brown">#FF8D6E63</color>      <!-- Землистый коричневый -->
+
+    <!-- 🧁 Пастельные / мягкие -->
+    <color name="pastel_mint">#FFB2DFDB</color>      <!-- Мятный пастель -->
+    <color name="pastel_lavender">#FFE1BEE7</color>  <!-- Лавандовый пастель -->
+
+    <!-- ⚪ Нейтральные -->
+    <color name="neutral_grey">#FFBDBDBD</color>      <!-- Нейтрально-серый -->
+    <color name="off_white">#FFFFF8E1</color>        <!-- Тёплый белый -->
 </resources>
