@@ -1,30 +1,40 @@
 package com.example.mywaifu.data.sharedPrefs
 
+import android.content.Context
 import android.content.SharedPreferences
+import com.example.mywaifu.data.sharedPrefs.client.StorageClient
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
 
-const val FAVORITE = "favorite"
+const val FAVORITE_WAIFU = "favorite"
+const val ANOTHER_STORAGE = "another_storage"
 
-class PrefsStorageClient {
+class PrefsStorageClient<T>(
+    private val context: Context,
+    private val prefsFileName: String,
+    private val dataKey: String,
+    private val type: Type
+) : StorageClient<T> {
 
-    fun read(prefs: SharedPreferences): List<String>? {
-        val json = prefs.getString(FAVORITE, "")
-        return Gson().fromJson(json, object : TypeToken<MutableList<String>>() {}.type)
+    private val prefs: SharedPreferences = context.getSharedPreferences(prefsFileName, Context.MODE_PRIVATE)
+    private val gson = Gson()
+
+    override fun write(data: T) {
+        prefs.edit().putString(dataKey, gson.toJson(data, type)).apply()
     }
 
-    fun write(prefs: SharedPreferences,
-              favorite: List<String>,
-              key: String
-    ) {
-        val json = Gson().toJson(favorite)
-        prefs.edit()
-            .putString(key, json)
-            .apply()
+    override fun read(): T? {
+        val dataJson = prefs.getString(dataKey, null)
+        return  if (dataJson == null) {
+            null
+        } else {
+            gson.fromJson(dataJson, type)
+        }
     }
 
-    fun clear(prefs: SharedPreferences) {
-        prefs.edit().clear().apply()
+    override fun clear() {
+        prefs.edit().remove(dataKey).apply()
     }
+
 
 }

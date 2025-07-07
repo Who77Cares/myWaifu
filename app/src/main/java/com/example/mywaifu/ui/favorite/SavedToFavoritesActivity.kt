@@ -1,21 +1,26 @@
 package com.example.mywaifu.ui.favorite
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.mywaifu.Creator
 import com.example.mywaifu.R
-import com.example.mywaifu.data.sharedPrefs.FAVORITE
-import com.example.mywaifu.data.sharedPrefs.PrefsStorageClient
+import com.example.mywaifu.domain.sharedPrefs.FavoriteInteractor
 
-class SavedToFavoritesActivity : AppCompatActivity() {
+class SavedToFavoritesActivity: AppCompatActivity() {
 
-    private lateinit var waifuList: List<String>
+
     private lateinit var recycleView: RecyclerView
     private lateinit var clearWaifu: Button
+    private val waifuList: MutableList<String> = mutableListOf()
 
-    private lateinit var prefsStorageClient: PrefsStorageClient
+    private val favoriteInteractor by lazy {
+        Creator.provideFavoriteInteractor(this)
+    }
+
 
     private val adapter = WaifuAdapter()
 
@@ -27,12 +32,16 @@ class SavedToFavoritesActivity : AppCompatActivity() {
         recycleView = findViewById(R.id.waifuList)
         clearWaifu = findViewById(R.id.clearWaifu)
 
-        prefsStorageClient = PrefsStorageClient()
+        favoriteInteractor.readFavorite(
+            object : FavoriteInteractor.FavoriteConsumer {
+                override fun consume(favorite: MutableList<String>?) {
+                    waifuList.clear()
+                    waifuList.addAll(favorite ?: mutableListOf() )
+                }
 
-        val prefs = getSharedPreferences(FAVORITE, MODE_PRIVATE)
-        val favorite = prefsStorageClient.read(prefs)?.toMutableList() ?: mutableListOf()
+            }
+        )
 
-        waifuList = favorite
 
 
         adapter.waifu = waifuList
@@ -42,10 +51,11 @@ class SavedToFavoritesActivity : AppCompatActivity() {
 
         clearWaifu.setOnClickListener {
             // Очистка из хранилища
-            prefsStorageClient.clear(prefs)
+
+            favoriteInteractor.clearFavorite()
 
             // Очистка локального списка
-            waifuList = emptyList()
+            waifuList.clear()
 
             // Обновление адаптера
             adapter.waifu = waifuList
