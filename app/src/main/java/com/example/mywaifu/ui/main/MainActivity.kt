@@ -3,6 +3,8 @@ package com.example.mywaifu.ui.main
 import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -12,12 +14,14 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.mywaifu.Creator
 import com.example.mywaifu.R
 
-import com.example.mywaifu.WaifuApi
-import com.example.mywaifu.WaifuResponse
+import com.example.mywaifu.data.waifuAPI.WaifuApi
+import com.example.mywaifu.data.waifuAPI.models.WaifuResponse
 import com.example.mywaifu.data.sharedPrefs.FAVORITE
 import com.example.mywaifu.data.sharedPrefs.PrefsStorageClient
+import com.example.mywaifu.domain.api.WaifuInteractor
 import com.example.mywaifu.ui.favorite.SavedToFavoritesActivity
 import retrofit2.Call
 import retrofit2.Callback
@@ -39,18 +43,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var prefsStorageClient: PrefsStorageClient
 
-    object RetrofitClient {
-        private const val BASE_URL = "https://api.waifu.pics/"
-        private val retrofit: Retrofit by lazy {
-            Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-        }
-        val waifuApiService: WaifuApi by lazy {
-            retrofit.create(WaifuApi::class.java)
-        }
-    }
+    private val waifuInteractor = Creator.provideWifuInteractor()
+    private var handler = Handler(Looper.getMainLooper())
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,38 +90,30 @@ class MainActivity : AppCompatActivity() {
 
         progressBar.visibility = View.VISIBLE
 
-        val call = RetrofitClient.waifuApiService.getSingleImage(type, category)
-        call.enqueue(object : Callback<WaifuResponse> {
-            override fun onResponse(call: Call<WaifuResponse>, response: Response<WaifuResponse>) {
+        waifuInteractor.getWaifu(
+            type = type,
+            category = category,
+            object : WaifuInteractor.WaifuConsumer {
 
-                progressBar.visibility = View.GONE
+                override fun consume(url: String?, errorMessage: String?) {
+                    handler.post {
+                        progressBar.visibility = View.INVISIBLE
 
-                if (response.isSuccessful) {
-                    // Получаем URL изображения
-                    imgUrl = response.body()?.url ?: ""
-                    Log.d(TAG, "Image URL: $imgUrl")
-
-                    // Загружаем изображение в ImageView
-                    imgUrl.let { url ->
-                        Glide.with(this@MainActivity)
-                            .load(url)
-                            .into(imageView)
+                        url?.let {
+                            imgUrl = it
+                            Glide.with(this@MainActivity)
+                                .load(url)
+                                .into(imageView)
+                        }
                     }
 
-                    savedText.text = imgUrl.substringAfterLast('/')
 
-
-                } else {
-                    Log.d(TAG, "Ошибка: ${response.code()}")
                 }
-            }
 
-            override fun onFailure(call: Call<WaifuResponse>, t: Throwable) {
-                progressBar.visibility = View.GONE
-                Log.d(TAG, "Ошибка сети: ${t.message}")
             }
-        })
+        )
     }
+
 
     private fun addToFavorite() {
         val prefs = getSharedPreferences(FAVORITE, MODE_PRIVATE)
@@ -135,6 +122,11 @@ class MainActivity : AppCompatActivity() {
 
         if (favorite.contains(imgUrl)) {
             Toast.makeText(this, "Уже есть", Toast.LENGTH_LONG).show()
+            return
+        }
+
+        if (imgUrl.isBlank()) {
+            Toast.makeText(this, "Нет картинки для добавления", Toast.LENGTH_SHORT).show()
             return
         }
 
@@ -148,7 +140,5 @@ class MainActivity : AppCompatActivity() {
         prefsStorageClient.write(prefs, favorite, FAVORITE)
 
         savedText.setText(favorite.toString())
-
-
     }
 }

@@ -1,10 +1,9 @@
-package com.example.mywaifu
+package com.example.mywaifu.data.waifu_api
 
 
+import com.example.mywaifu.data.waifu_api.models.WaifuResponse
 import retrofit2.Call
-import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
 import retrofit2.http.Path
 
 interface WaifuApi {
