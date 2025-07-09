@@ -1,69 +1,41 @@
 package com.example.mywaifu.ui.favorite
 
-import android.content.Context
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.mywaifu.Creator
-import com.example.mywaifu.R
-import com.example.mywaifu.domain.sharedPrefs.FavoriteInteractor
+import com.example.mywaifu.databinding.ActivitySavedToFavoritesBinding
 
 class SavedToFavoritesActivity: AppCompatActivity() {
 
-
-    private lateinit var recycleView: RecyclerView
-    private lateinit var clearWaifu: Button
-    private val waifuList: MutableList<String> = mutableListOf()
-
-    private val favoriteInteractor by lazy {
-        Creator.provideFavoriteInteractor(this)
-    }
-
+    private var viewModel: SaveToFavoriteViewModel? = null
+    private lateinit var binding: ActivitySavedToFavoritesBinding
 
     private val adapter = WaifuAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_saved_to_favorites)
+        binding = ActivitySavedToFavoritesBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
 
-        recycleView = findViewById(R.id.waifuList)
-        clearWaifu = findViewById(R.id.clearWaifu)
+        viewModel = ViewModelProvider(this, SaveToFavoriteViewModel.getFactory())
+            .get(SaveToFavoriteViewModel::class.java)
 
-        favoriteInteractor.readFavorite(
-            object : FavoriteInteractor.FavoriteConsumer {
-                override fun consume(favorite: MutableList<String>?) {
-                    waifuList.clear()
-                    waifuList.addAll(favorite ?: mutableListOf() )
-                }
-
-            }
-        )
-
-
-
-        adapter.waifu = waifuList
-
-        recycleView.layoutManager = LinearLayoutManager(this)
-        recycleView.adapter = adapter
-
-        clearWaifu.setOnClickListener {
-            // Очистка из хранилища
-
-            favoriteInteractor.clearFavorite()
-
-            // Очистка локального списка
-            waifuList.clear()
-
-            // Обновление адаптера
+        viewModel?.observeWaifuList()?.observe(this) { waifuList ->
             adapter.waifu = waifuList
-            adapter.notifyDataSetChanged()
-
         }
 
+        viewModel?.getWaifuList()
 
+        binding.waifuRecycleView.adapter = adapter
+        binding.waifuRecycleView.layoutManager = LinearLayoutManager(this)
 
+        binding.clearWaifu.setOnClickListener {
+
+            viewModel?.clearWaifu()
+            adapter.notifyDataSetChanged()
+        }
     }
+
 }

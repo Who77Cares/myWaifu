@@ -1,117 +1,98 @@
 package com.example.mywaifu.ui.main
-
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.example.mywaifu.Creator
-import com.example.mywaifu.R
-import com.example.mywaifu.Resource
-import com.example.mywaifu.domain.waifu_api.WaifuInteractor
+import com.example.mywaifu.databinding.ActivityMainBinding
 import com.example.mywaifu.ui.favorite.SavedToFavoritesActivity
 
 class MainActivity: AppCompatActivity() {
 
-    private var imgUrl: String = ""
-    private lateinit var imageView: ImageView
-    private lateinit var getWaifu: Button
-    private lateinit var getWaifu2: Button
-    private lateinit var getWaifu3: Button
-    private lateinit var addToFavorite: Button
-    private lateinit var progressBar: ProgressBar
-    private lateinit var savedText: TextView
-    private lateinit var goToWaifu: Button
+    private var viewModel: MainViewModel? = null
+    private lateinit var binding: ActivityMainBinding
 
-
-
-    private val waifuInteractor = Creator.provideWifuInteractor()
-    private val handler = Handler(Looper.getMainLooper())
-
-    private val favoriteInteractor by lazy {
-        Creator.provideFavoriteInteractor(this)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        imageView = findViewById(R.id.imageView)
-        getWaifu = findViewById(R.id.getWaifu)
-        getWaifu2 = findViewById(R.id.getWaifu2)
-        getWaifu3 = findViewById(R.id.getWaifu3)
-        progressBar = findViewById(R.id.progressBar)
-        savedText = findViewById(R.id.savedText)
-        addToFavorite = findViewById(R.id.addToFavoriteButton)
-        goToWaifu = findViewById(R.id.goToFavoriteButton)
 
-        getWaifu.setOnClickListener {
-            getMyWaifu("sfw", "dance")
-        }
-        getWaifu2.setOnClickListener {
-            getMyWaifu("sfw", "awoo")
+        viewModel = ViewModelProvider(this, MainViewModel.getFactory())
+            .get(MainViewModel::class.java)
+
+        viewModel?.observeAddToFavorite()?.observe(this) { url ->
+            binding.savedText.text = url
         }
 
-        getWaifu3.setOnClickListener {
-            getMyWaifu("sfw", "cringe")
+
+        viewModel?.observeToast()?.observe(this) { message ->
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
 
-        addToFavorite.setOnClickListener {
-            val result = favoriteInteractor.validation(imgUrl)
 
-            when (result) {
-                is Resource.Error -> {
-                    Toast.makeText(this, result.message, Toast.LENGTH_LONG).show()
-                }
-                is Resource.Success -> {
-                    Toast.makeText(this, result.data , Toast.LENGTH_SHORT).show()
-                    savedText.text = imgUrl
-                }
-            }
+        viewModel?.observeState()?.observe(this) {
+            render(it)
         }
 
-        goToWaifu.setOnClickListener {
+
+
+
+        binding.getWaifu.setOnClickListener {
+            viewModel?.getMyWaifu("sfw", "dance")
+        }
+
+        binding.getWaifu2.setOnClickListener {
+            viewModel?.getMyWaifu("sfw", "awoo")
+        }
+
+        binding.getWaifu3.setOnClickListener {
+            viewModel?.getMyWaifu("sfw", "cringe")
+        }
+
+        binding.addToFavoriteButton.setOnClickListener {
+           viewModel?.addToFavorite()
+        }
+
+        binding.goToFavoriteButton.setOnClickListener {
             val intent = Intent(this, SavedToFavoritesActivity::class.java)
             startActivity(intent)
-
         }
 
-
     }
 
-    private fun getMyWaifu(type: String, category: String) {
 
-        progressBar.visibility = View.VISIBLE
-
-        waifuInteractor.getWaifu(
-            type = type,
-            category = category,
-            object : WaifuInteractor.WaifuConsumer {
-
-                override fun consume(url: String?, errorMessage: String?) {
-                    handler.post {
-                        progressBar.visibility = View.INVISIBLE
-
-                        url?.let {
-                            imgUrl = it
-                            Glide.with(this@MainActivity)
-                                .load(url)
-                                .into(imageView)
-                        }
-                    }
-
-
-                }
-
-            }
-        )
+    private fun render(state: MainState) {
+        when (state) {
+            is MainState.Content -> showContent(state.url)
+            is MainState.Error -> showError(state.message)
+            MainState.Loading -> showLading()
+        }
     }
+
+
+
+    private fun showContent(url: String) {
+        binding.progressBar.visibility = View.INVISIBLE
+
+        Glide.with(this)
+            .load(url)
+            .into(binding.imageView)
+    }
+
+
+    private fun showError(message: String) {
+        binding.progressBar.visibility = View.INVISIBLE
+
+        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+
+    private fun showLading() {
+        binding.progressBar.visibility = View.VISIBLE
+    }
+
 }
