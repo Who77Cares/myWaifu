@@ -13,20 +13,20 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="25dp"
-        android:text="Список дам"
+        android:text="Waifu list"
         android:textSize="25sp"
 
-        app:layout_constraintBottom_toTopOf="@+id/waifuList"
+        app:layout_constraintBottom_toTopOf="@+id/waifuRecycleView"
         app:layout_constraintEnd_toStartOf="@+id/clearWaifu"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/clearWaifu"
-        android:text="Очистить список"
+        android:text="Clear list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/waifuList"
+        app:layout_constraintBottom_toTopOf="@+id/waifuRecycleView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/waifuHeading"
         app:layout_constraintTop_toTopOf="parent"
@@ -37,7 +37,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
 
-        android:id="@+id/waifuList"
+        android:id="@+id/waifuRecycleView"
 
         android:layout_width="0dp"
         android:layout_height="0dp"

@@ -13,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintGuide_percent="0.84" />
 
     <TextView
         android:id="@+id/savedText"
@@ -28,28 +28,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <ImageButton
         android:id="@+id/addToFavoriteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/love_shape"
+        android:padding="10dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/love"
+        android:foreground="?attr/selectableItemBackground"
+        app:layout_constraintWidth_percent="0.15"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
 
-        android:backgroundTint="@color/bright_orange"
-        android:text="Добавить в сохраненнки"
-        android:textColor="@color/black"
 
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@id/goToFavoriteButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/guideLine"
+        />
 
     <Button
         android:id="@+id/goToFavoriteButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Мои вайфу"
-        app:layout_constraintBottom_toTopOf="@id/savedText"
+        android:text="My waifu"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addToFavoriteButton" />
+        app:layout_constraintStart_toEndOf="@id/addToFavoriteButton"
+        app:layout_constraintTop_toBottomOf="@+id/guideLine" />
 
 
     <!-- ImageView для отображения изображения -->
@@ -76,57 +84,54 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Контейнер для кнопок снизу -->
-    <LinearLayout
-        android:id="@+id/bottomButtonsLayout"
+
+    <Button
+        android:id="@+id/getWaifu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:orientation="horizontal"
-        android:weightSum="4"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="1"
+        app:icon="@drawable/kissing"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toEndOf="@+id/getWaifu2"
+        app:layout_constraintTop_toBottomOf="@+id/savedText" />
 
-        <!-- Кнопка 1 -->
+    <Button
+        android:id="@+id/getWaifu2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="2"
+        app:icon="@drawable/cat"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
 
-        <!-- Кнопка 2 -->
-        <Button
-            android:id="@+id/getWaifu"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="получить кошко-девочку"
-            app:icon="@drawable/kissing" />
-
-        <Button
-            android:id="@+id/getWaifu2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="кусь"
-            app:icon="@drawable/cat" />
+        app:layout_constraintStart_toEndOf="@+id/getWaifu3"
+        app:layout_constraintTop_toBottomOf="@+id/savedText" />
 
         <!-- Кнопка 3 -->
-        <Button
-            android:id="@+id/getWaifu3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="вау"
+    <Button
+        android:id="@+id/getWaifu3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="3"
 
 
-            app:icon="@drawable/chat" />
+        app:icon="@drawable/chat"
+        app:layout_constraintBottom_toTopOf="@+id/imageView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/savedText" />
 
         <!-- Кнопка 4 -->
 
-    </LinearLayout>
+
 
     <!-- TextView для версии -->
     <TextView
