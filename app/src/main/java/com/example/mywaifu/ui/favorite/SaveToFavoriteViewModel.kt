@@ -40,6 +40,7 @@ class SaveToFavoriteViewModel(context: Context): ViewModel() {
             object : FavoriteInteractor.FavoriteConsumer {
                 override fun consume(favorite: MutableList<String>?) {
                     waifuList.addAll(favorite ?: mutableListOf())
+                    favorite?.get(0)
                     waifuListLiveData.postValue(waifuList)
                 }
 
@@ -51,7 +52,6 @@ class SaveToFavoriteViewModel(context: Context): ViewModel() {
         favoriteInteractor.clearFavorite()
         waifuList.clear()
         waifuListLiveData.postValue(waifuList)
-
     }
 
 }

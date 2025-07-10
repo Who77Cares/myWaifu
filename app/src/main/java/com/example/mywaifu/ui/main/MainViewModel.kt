@@ -31,13 +31,13 @@ class MainViewModel(context: Context): ViewModel() {
         }
     }
 
-    private var imgUrl: String = ""
+    private var imgUrl: MutableList<String> = mutableListOf()
 
     private val stateLiveData = MutableLiveData<MainState>()
     fun observeState(): LiveData<MainState> = stateLiveData
 
-    private val addToFavoriteLivedata = MutableLiveData<String>()
-    fun observeAddToFavorite(): LiveData<String> = addToFavoriteLivedata
+    private val addToFavoriteLivedata = MutableLiveData<MutableList<String>>()
+    fun observeAddToFavorite(): LiveData<MutableList<String>> = addToFavoriteLivedata
 
 
     private val toastLiveData = MutableLiveData<String>()
@@ -46,21 +46,37 @@ class MainViewModel(context: Context): ViewModel() {
     private val handler = Handler(Looper.getMainLooper())
 
 
-    fun getMyWaifu(type: String, category: String) {
+    fun getMyWaifu(type: String, category: String, singleImg: Boolean) {
 
         renderState(MainState.Loading)
 
         waifuInteractor.getWaifu(
             type = type,
             category = category,
+            singleImg = singleImg,
             object : WaifuInteractor.WaifuConsumer {
 
-                override fun consume(url: String?, errorMessage: String?) {
+                override fun consume(data: Any?, errorMessage: String?) {
                     handler.post {
+                        if (data != null) {
+                            if (singleImg) {
+                                val url = data as String
+                                renderState(MainState.Content(url))
 
-                        if (url != null) {
-                            renderState(MainState.Content(url))
-                            imgUrl = url
+
+                                imgUrl.add(0, url)
+                                if (imgUrl.size > 3) imgUrl.removeAt(3)
+//                                addToFavoriteLivedata.postValue(imgUrl)
+                            }
+
+                            if (!singleImg) {
+                                val urlList = data as List<String>
+                                renderState(MainState.ManyContent(urlList))
+//                                imgUrl = urlList.toString()
+//                                addToFavoriteLivedata.postValue(imgUrl)
+                            }
+
+
 
                         } else if (errorMessage != null) {
                             renderState(MainState.Error(errorMessage))
@@ -68,7 +84,8 @@ class MainViewModel(context: Context): ViewModel() {
                     }
                 }
 
-            }
+            },
+
         )
     }
 
@@ -77,7 +94,7 @@ class MainViewModel(context: Context): ViewModel() {
     }
 
     fun addToFavorite() {
-        val result = favoriteInteractor.validation(imgUrl)
+        val result = favoriteInteractor.validation(imgUrl[0])
 
         when (result) {
             is Resource.Error -> {
@@ -90,6 +107,5 @@ class MainViewModel(context: Context): ViewModel() {
             }
         }
     }
-
 
 }

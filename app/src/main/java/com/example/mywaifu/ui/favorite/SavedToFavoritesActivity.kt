@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mywaifu.databinding.ActivitySavedToFavoritesBinding
+import com.example.mywaifu.ui.WaifuAdapter
 
 class SavedToFavoritesActivity: AppCompatActivity() {
 

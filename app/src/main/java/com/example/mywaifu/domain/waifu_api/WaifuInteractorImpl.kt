@@ -12,14 +12,22 @@ class WaifuInteractorImpl(
     override fun getWaifu(
         type: String,
         category: String,
+        singleImg: Boolean,
         consumer: WaifuInteractor.WaifuConsumer
     ) {
         executor.execute {
 
-            val resource = repository.getWaifu(
-                type = type,
-                category = category
-            )
+            val resource = if (singleImg) {
+                repository.getWaifu(
+                    type = type,
+                    category = category
+                )
+            } else {
+                repository.getManyWaifu(
+                    type = type,
+                    category = category
+                )
+            }
 
             when (resource) {
                 is Resource.Success -> {
@@ -29,6 +37,7 @@ class WaifuInteractorImpl(
                 is Resource.Error -> {
                     consumer.consume(null, resource.message)
                 }
+
             }
 
         }
