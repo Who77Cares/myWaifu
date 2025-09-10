@@ -1,4 +1,4 @@
-package com.example.mywaifu.ui.main
+package com.example.mywaifu.ui.fragments.view_models
 
 import android.content.Context
 import android.os.Handler
@@ -7,15 +7,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.mywaifu.App
 import com.example.mywaifu.Creator
 import com.example.mywaifu.Resource
 import com.example.mywaifu.domain.waifu_api.WaifuInteractor
+import com.example.mywaifu.GlobalState
 
-class MainViewModel(context: Context): ViewModel() {
+class OneWaifuViewModel(context: Context): ViewModel() {
 
     private val waifuInteractor = Creator.provideWifuInteractor()
     private val favoriteInteractor by lazy {
@@ -25,16 +25,17 @@ class MainViewModel(context: Context): ViewModel() {
     companion object {
         fun getFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val app = (this[APPLICATION_KEY] as App)
-                MainViewModel(app)
+                val app =
+                    (this[ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY] as App)
+                OneWaifuViewModel(app)
             }
         }
     }
 
     private var imgUrl: MutableList<String> = mutableListOf()
 
-    private val stateLiveData = MutableLiveData<MainState>()
-    fun observeState(): LiveData<MainState> = stateLiveData
+    private val stateLiveData = MutableLiveData<GlobalState>()
+    fun observeState(): LiveData<GlobalState> = stateLiveData
 
     private val addToFavoriteLivedata = MutableLiveData<MutableList<String>>()
     fun observeAddToFavorite(): LiveData<MutableList<String>> = addToFavoriteLivedata
@@ -48,7 +49,7 @@ class MainViewModel(context: Context): ViewModel() {
 
     fun getMyWaifu(type: String, category: String, singleImg: Boolean) {
 
-        renderState(MainState.Loading)
+        renderState(GlobalState.Loading)
 
         waifuInteractor.getWaifu(
             type = type,
@@ -61,7 +62,7 @@ class MainViewModel(context: Context): ViewModel() {
                         if (data != null) {
                             if (singleImg) {
                                 val url = data as String
-                                renderState(MainState.Content(url))
+                                renderState(GlobalState.Content(url))
 
 
                                 imgUrl.add(0, url)
@@ -71,7 +72,7 @@ class MainViewModel(context: Context): ViewModel() {
 
                             if (!singleImg) {
                                 val urlList = data as List<String>
-                                renderState(MainState.ManyContent(urlList))
+                                renderState(GlobalState.ManyContent(urlList))
 //                                imgUrl = urlList.toString()
 //                                addToFavoriteLivedata.postValue(imgUrl)
                             }
@@ -79,7 +80,7 @@ class MainViewModel(context: Context): ViewModel() {
 
 
                         } else if (errorMessage != null) {
-                            renderState(MainState.Error(errorMessage))
+                            renderState(GlobalState.Error(errorMessage))
                         }
                     }
                 }
@@ -89,7 +90,7 @@ class MainViewModel(context: Context): ViewModel() {
         )
     }
 
-    fun renderState(state: MainState) {
+    fun renderState(state: GlobalState) {
         stateLiveData.postValue(state)
     }
 

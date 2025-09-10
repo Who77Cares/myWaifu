@@ -19,7 +19,7 @@
             android:name=".ui.favorite.SavedToFavoritesActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.main.MainActivity"
+            android:name=".RootActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>

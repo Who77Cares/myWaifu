@@ -13,22 +13,18 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.mywaifu.App
 import com.example.mywaifu.Creator
 import com.example.mywaifu.domain.waifu_api.WaifuInteractor
-import com.example.mywaifu.ui.main.MainState
-import com.example.mywaifu.ui.main.MainViewModel
+import com.example.mywaifu.GlobalState
+import com.example.mywaifu.ui.fragments.view_models.OneWaifuViewModel
 
-class TowWaifuViewModel(context: Context): ViewModel() {
+class TwoWaifuViewModel(): ViewModel() {
 
     private val waifuInteractor = Creator.provideWifuInteractor()
 
-    private val favoriteInteractor by lazy {
-        Creator.provideFavoriteInteractor(context)
-    }
 
     companion object {
         fun getFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
-                val app = (this[APPLICATION_KEY] as App)
-                MainViewModel(app)
+                TwoWaifuViewModel()
             }
         }
     }
@@ -46,9 +42,9 @@ class TowWaifuViewModel(context: Context): ViewModel() {
                     handler.post {
                         if(data != null) {
                             val urlList = data as List<String>
-                            renderState(MainState.ManyContent(urlList))
+                            renderState(GlobalState.ManyContent(urlList))
                         } else {
-                            renderState(MainState.Error("ошибка в getManyWaifu"))
+                            renderState(GlobalState.Error("ошибка в getManyWaifu"))
                         }
                     }
                 }
@@ -58,11 +54,11 @@ class TowWaifuViewModel(context: Context): ViewModel() {
 
     }
 
-    private val stateLiveData = MutableLiveData<MainState>()
-    fun observeState(): LiveData<MainState> = stateLiveData
+    private val stateLiveData = MutableLiveData<GlobalState>()
+    fun observeState(): LiveData<GlobalState> = stateLiveData
 
 
-    fun renderState(state: MainState) {
+    fun renderState(state: GlobalState) {
         stateLiveData.postValue(state)
     }
 
