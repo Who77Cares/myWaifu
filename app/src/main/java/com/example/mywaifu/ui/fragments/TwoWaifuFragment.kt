@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.lottie.LottieDrawable
 import com.example.mywaifu.databinding.FragmentTwoWaifuBinding
 import com.example.mywaifu.ui.WaifuAdapter
 import com.example.mywaifu.ui.fragments.view_models.TwoWaifuViewModel
@@ -80,7 +81,7 @@ class TwoWaifuFragment: Fragment() {
     }
 
     private fun showError(message: String) {
-        binding.progressBar.visibility = View.INVISIBLE
+        binding.progressBar2.visibility = View.VISIBLE
         binding.manyWaifuRecycleView.visibility = View.INVISIBLE
 
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
@@ -89,17 +90,22 @@ class TwoWaifuFragment: Fragment() {
 
     private fun showLading() {
 
-        binding.manyWaifuRecycleView.visibility = View.INVISIBLE
-        binding.progressBar.visibility = View.VISIBLE
+        binding.apply {
+            manyWaifuRecycleView.visibility = View.GONE
+            progressBar2.visibility = View.VISIBLE
+            progressBar2.repeatMode = LottieDrawable.RESTART
+            progressBar2.repeatCount = LottieDrawable.INFINITE
+            progressBar2.playAnimation()
+        }
     }
 
     private fun showManyContent(manyUrl: List<String>) {
-        binding.progressBar.visibility = View.INVISIBLE
+        binding.progressBar2.visibility = View.GONE
         binding.manyWaifuRecycleView.visibility = View.VISIBLE
 
         adapter.waifu = manyUrl
         adapter.notifyDataSetChanged()
 
-        Toast.makeText(requireContext(), "Много контента пришело", Toast.LENGTH_LONG).show()
+//        Toast.makeText(requireContext(), "Много контента пришело", Toast.LENGTH_LONG).show()
     }
 }

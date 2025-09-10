@@ -22,18 +22,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintGuide_percent="0.95" />
 
     <!-- Кнопка наверху -->
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/reload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:text="Refresh"
+        android:src="@drawable/restart"
+        android:backgroundTint="@color/warm_red"
         app:layout_constraintTop_toBottomOf="@id/guideLine1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"  />
 
     <!-- Список -->
     <androidx.recyclerview.widget.RecyclerView
@@ -46,7 +47,22 @@
         app:layout_constraintBottom_toTopOf="@id/guideLine2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp"
         tools:listitem="@layout/waifu_view" />
+
+
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/progressBar2"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="20dp"
+        app:lottie_fileName="girl.json"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Текст над нижними кнопками -->
     <TextView
@@ -57,7 +73,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:textSize="12sp"
-        tools:text="http://gogo.com"
+        tools:text="https://waifu.pics/docs"
         app:layout_constraintBottom_toBottomOf="@id/bottomRow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -76,17 +92,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <!-- Прогресс -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+
 
     <!-- Версия -->
     <TextView

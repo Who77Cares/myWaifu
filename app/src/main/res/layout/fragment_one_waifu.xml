@@ -92,52 +92,39 @@
         android:backgroundTint="@color/earth_brown"
         android:gravity="center"
         android:padding="10dp"
-        android:text="Get many"
+        android:text="3"
         app:icon="@drawable/kissing"
-
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/getWaifu2"
         app:layout_constraintTop_toBottomOf="@+id/guideLine1" />
 
 
-    <!-- ImageView для отображения изображения -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/manyWaifuRecycleView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="70dp"
-        app:layout_constraintBottom_toTopOf="@id/guideLine2"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/getWaifu2"
-
-        tools:listitem="@layout/waifu_view" />
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="70dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toTopOf="@+id/guideLine2"
         app:layout_constraintTop_toBottomOf="@id/getWaifu2"
-        app:layout_constraintDimensionRatio="h, 16:9"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:src="@tools:sample/backgrounds/scenic" />
 
 
-    <!-- Прогресс бар -->
-    <ProgressBar
+    <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginTop="20dp"
-        android:visibility="gone"
+        app:lottie_fileName="girl.json"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/getWaifu1" />
 
 
     <!-- Guideline для разделения верхней и нижней частей экрана -->
@@ -146,20 +133,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintGuide_percent="0.90" />
 
-    <TextView
-        android:id="@+id/savedText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="20dp"
-        tools:text="http://gogo.com"
-        android:textSize="8sp"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/goToFavoriteButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/imageView" />
 
     <ImageButton
         android:id="@+id/addToFavoriteButton"
@@ -174,21 +149,21 @@
         android:src="@drawable/love"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toStartOf="@id/goToFavoriteButton"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideLine2"
         app:layout_constraintWidth_percent="0.15" />
 
 
-    <Button
-        android:id="@+id/goToFavoriteButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="My waifu"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/addToFavoriteButton"
-        app:layout_constraintTop_toBottomOf="@+id/guideLine2" />
+<!--    <Button-->
+<!--        android:id="@+id/goToFavoriteButton"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="My waifu"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toEndOf="@id/addToFavoriteButton"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/guideLine2" />-->
 
 
     <!-- TextView для версии -->

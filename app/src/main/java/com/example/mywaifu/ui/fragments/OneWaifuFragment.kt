@@ -9,11 +9,13 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.lottie.LottieDrawable
 import com.bumptech.glide.Glide
 
 import com.example.mywaifu.databinding.FragmentOneWaifuBinding
 import com.example.mywaifu.ui.WaifuAdapter
 import com.example.mywaifu.GlobalState
+import com.example.mywaifu.R
 
 import com.example.mywaifu.ui.fragments.view_models.OneWaifuViewModel
 
@@ -51,14 +53,10 @@ class OneWaifuFragment: Fragment() {
             .get(OneWaifuViewModel::class.java)
 
 
-        binding.manyWaifuRecycleView.adapter = adapter
-        binding.manyWaifuRecycleView.layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
 
 
         viewModel?.observeAddToFavorite()?.observe(viewLifecycleOwner) { urlList ->
-            binding.savedText.text = urlList[0]
+//            binding.savedText.text = urlList[0]
 
             for (i in urlList.indices) {
                 Glide.with(this)
@@ -84,10 +82,11 @@ class OneWaifuFragment: Fragment() {
             viewModel?.getMyWaifu("sfw", "awoo", true)
         }
 
+        binding.getWaifu3.setOnClickListener {
+            viewModel?.getMyWaifu("sfw", "kick", true)
+        }
 
-//        binding.getWaifu3.setOnClickListener {
-//            viewModel?.getMyWaifu("nsfw", "waifu", false)
-//        }
+
 
 
         binding.addToFavoriteButton.setOnClickListener {
@@ -95,11 +94,9 @@ class OneWaifuFragment: Fragment() {
         }
 
 
-        binding.goToFavoriteButton.setOnClickListener {
-            // навигируемся через фрагменты
-//                val intent = Intent(this, SavedToFavoritesActivity::class.java)
-//                startActivity(intent)
-        }
+//        binding.goToFavoriteButton.setOnClickListener {
+////            (parentFragment as? TabFragment)?.openFavorites()
+//        }
 
     }
 
@@ -118,7 +115,6 @@ class OneWaifuFragment: Fragment() {
 
     private fun showContent(url: String) {
         binding.progressBar.visibility = View.INVISIBLE
-        binding.manyWaifuRecycleView.visibility = View.INVISIBLE
         binding.imageView.visibility = View.VISIBLE
 
         Glide.with(this)
@@ -130,7 +126,6 @@ class OneWaifuFragment: Fragment() {
     private fun showError(message: String) {
         binding.progressBar.visibility = View.INVISIBLE
         binding.imageView.visibility = View.INVISIBLE
-        binding.manyWaifuRecycleView.visibility = View.INVISIBLE
 
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
 
@@ -138,16 +133,28 @@ class OneWaifuFragment: Fragment() {
 
 
     private fun showLoading() {
-        binding.imageView.visibility = View.INVISIBLE
-        binding.manyWaifuRecycleView.visibility = View.INVISIBLE
-        binding.progressBar.visibility = View.VISIBLE
+
+
+        binding.apply {
+
+            progressBar.visibility = View.VISIBLE
+            progressBar.repeatMode = LottieDrawable.RESTART
+            progressBar.repeatCount = LottieDrawable.INFINITE
+            progressBar.playAnimation()
+
+
+            imageView.visibility = View.GONE
+
+
+        }
+
+
     }
 
 
     private fun showManuContent(manyUrl: List<String>) {
-        binding.progressBar.visibility = View.INVISIBLE
+        binding.progressBar.visibility = View.GONE
         binding.imageView.visibility = View.INVISIBLE
-        binding.manyWaifuRecycleView.visibility = View.VISIBLE
 
         adapter.waifu = manyUrl
         adapter.notifyDataSetChanged()

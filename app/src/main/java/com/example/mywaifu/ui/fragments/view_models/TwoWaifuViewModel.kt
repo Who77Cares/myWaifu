@@ -33,6 +33,9 @@ class TwoWaifuViewModel(): ViewModel() {
 
 
     fun getManyWaifu(type: String, category: String, singleImg: Boolean) {
+
+        renderState(GlobalState.Loading)
+
         waifuInteractor.getWaifu(
             type = type,
             category = category,
