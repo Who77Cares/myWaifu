@@ -3,6 +3,8 @@ package com.example.mywaifu.data.waifu_api
 
 import com.example.mywaifu.Resource
 import com.example.mywaifu.data.waifu_api.client.NetworkClient
+import com.example.mywaifu.data.waifu_api.models.ManyWaifuRequest
+import com.example.mywaifu.data.waifu_api.models.ManyWaifuResponse
 import com.example.mywaifu.data.waifu_api.models.WaifuRequest
 import com.example.mywaifu.data.waifu_api.models.WaifuResponse
 import com.example.mywaifu.domain.waifu_api.WaifuRepository
@@ -29,6 +31,30 @@ class WaifuRepositoryImpl(private val networkClient: NetworkClient): WaifuReposi
                     Resource.Success(result)
                 }
             }
+            else -> {
+                Resource.Error("Server error")
+            }
+        }
+    }
+
+    override fun getManyWaifu(type: String, category: String): Resource<List<String>> {
+        val request = ManyWaifuRequest(type, category)
+        val response = networkClient.doRequest(request)
+
+        return when (response.resultCode) {
+            -1 -> Resource.Error("Connection error")
+
+            200 -> {
+                val waifuResponse = response as ManyWaifuResponse
+                val result = waifuResponse.manyUrl
+
+                if (result.isEmpty()) {
+                    Resource.Error("Nothing is found")
+                } else {
+                    Resource.Success(result)
+                }
+            }
+
             else -> {
                 Resource.Error("Server error")
             }

@@ -1,0 +1,170 @@
+package com.example.mywaifu.ui.fragments
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.airbnb.lottie.LottieDrawable
+import com.bumptech.glide.Glide
+
+import com.example.mywaifu.databinding.FragmentOneWaifuBinding
+import com.example.mywaifu.ui.WaifuAdapter
+import com.example.mywaifu.GlobalState
+import com.example.mywaifu.R
+
+import com.example.mywaifu.ui.fragments.view_models.OneWaifuViewModel
+
+class OneWaifuFragment: Fragment() {
+
+    private var viewModel: OneWaifuViewModel? = null
+    private var _binding: FragmentOneWaifuBinding? = null
+    private val binding get() = _binding!!
+
+    private val adapter: WaifuAdapter = WaifuAdapter()
+
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentOneWaifuBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        val imageViews = listOf<View>(
+            binding.imageViewSaved1,
+            binding.imageViewSaved2,
+            binding.imageViewSaved3
+        )
+
+
+        viewModel = ViewModelProvider(this, OneWaifuViewModel.getFactory())
+            .get(OneWaifuViewModel::class.java)
+
+
+
+
+        viewModel?.observeAddToFavorite()?.observe(viewLifecycleOwner) { urlList ->
+//            binding.savedText.text = urlList[0]
+
+            for (i in urlList.indices) {
+                Glide.with(this)
+                    .load(urlList[i])
+                    .into(imageViews[i] as ImageView)
+            }
+        }
+
+        viewModel?.observeToast()?.observe(viewLifecycleOwner) { message ->
+
+            Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        }
+
+        viewModel?.observeState()?.observe(viewLifecycleOwner) {
+            render(it)
+        }
+
+        binding.getWaifu1.setOnClickListener {
+            viewModel?.getMyWaifu("sfw", "dance", true)
+        }
+
+        binding.getWaifu2.setOnClickListener {
+            viewModel?.getMyWaifu("sfw", "awoo", true)
+        }
+
+        binding.getWaifu3.setOnClickListener {
+            viewModel?.getMyWaifu("sfw", "kick", true)
+        }
+
+
+
+
+        binding.addToFavoriteButton.setOnClickListener {
+            viewModel?.addToFavorite()
+        }
+
+
+//        binding.goToFavoriteButton.setOnClickListener {
+////            (parentFragment as? TabFragment)?.openFavorites()
+//        }
+
+    }
+
+    private fun render(state: GlobalState) {
+        when (state) {
+            is GlobalState.Content -> showContent(state.url)
+            is GlobalState.Error -> showError(state.message)
+            is GlobalState.ManyContent -> showManuContent(state.manyUrl)
+            GlobalState.Loading -> showLoading()
+
+        }
+    }
+
+
+
+
+    private fun showContent(url: String) {
+        binding.progressBar.visibility = View.INVISIBLE
+        binding.imageView.visibility = View.VISIBLE
+
+        Glide.with(this)
+            .load(url)
+            .into(binding.imageView)
+    }
+
+
+    private fun showError(message: String) {
+        binding.progressBar.visibility = View.INVISIBLE
+        binding.imageView.visibility = View.INVISIBLE
+
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+
+    }
+
+
+    private fun showLoading() {
+
+
+        binding.apply {
+
+            progressBar.visibility = View.VISIBLE
+            progressBar.repeatMode = LottieDrawable.RESTART
+            progressBar.repeatCount = LottieDrawable.INFINITE
+            progressBar.playAnimation()
+
+
+            imageView.visibility = View.GONE
+
+
+        }
+
+
+    }
+
+
+    private fun showManuContent(manyUrl: List<String>) {
+        binding.progressBar.visibility = View.GONE
+        binding.imageView.visibility = View.INVISIBLE
+
+        adapter.waifu = manyUrl
+        adapter.notifyDataSetChanged()
+
+        Toast.makeText(requireContext(), "Много контента пришело", Toast.LENGTH_LONG).show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+}

@@ -15,6 +15,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:src="@tools:sample/backgrounds/scenic"
-        android:layout_marginBottom="10dp"/>
+        android:background="#FF0000" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

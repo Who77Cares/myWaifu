@@ -1,7 +1,6 @@
-package com.example.mywaifu.ui.favorite
+package com.example.mywaifu.ui
 
 import android.view.LayoutInflater
-import android.view.RoundedCorner
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
