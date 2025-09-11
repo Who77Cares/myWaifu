@@ -4,6 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.example.mywaifu.ui.fragments.FirstTabHostFragment
 import com.example.mywaifu.ui.fragments.OneWaifuFragment
 import com.example.mywaifu.ui.fragments.TwoWaifuFragment
 
@@ -13,7 +14,7 @@ class TabAdapter(
 ): FragmentStateAdapter(fragmentManager, lifecycle) {
     override fun createFragment(position: Int): Fragment {
         return when (position) {
-            0 -> OneWaifuFragment()
+            0 -> FirstTabHostFragment() // обёртка с внутренней навигацией
             else -> TwoWaifuFragment()
         }
     }

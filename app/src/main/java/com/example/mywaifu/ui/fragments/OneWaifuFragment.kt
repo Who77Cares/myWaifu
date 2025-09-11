@@ -82,9 +82,11 @@ class OneWaifuFragment: Fragment() {
             viewModel?.getMyWaifu("sfw", "awoo", true)
         }
 
-        binding.getWaifu3.setOnClickListener {
-            viewModel?.getMyWaifu("sfw", "kick", true)
+        // Кнопка перехода на третий экран внутри 1-го таба
+        binding.openThirdButton.setOnClickListener {
+            (parentFragment as? FirstTabHostFragment)?.openThirdInsideFirstTab()
         }
+
 
 
 
@@ -97,6 +99,8 @@ class OneWaifuFragment: Fragment() {
 //        binding.goToFavoriteButton.setOnClickListener {
 ////            (parentFragment as? TabFragment)?.openFavorites()
 //        }
+
+
 
     }
 
