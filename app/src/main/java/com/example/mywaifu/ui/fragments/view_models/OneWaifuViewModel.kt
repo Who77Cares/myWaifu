@@ -3,6 +3,7 @@ package com.example.mywaifu.ui.fragments.view_models
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -62,6 +63,7 @@ class OneWaifuViewModel(context: Context): ViewModel() {
                         if (data != null) {
                             if (singleImg) {
                                 val url = data as String
+                                Log.d("----",url)
                                 renderState(GlobalState.Content(url))
 
 
@@ -81,6 +83,8 @@ class OneWaifuViewModel(context: Context): ViewModel() {
 
                         } else if (errorMessage != null) {
                             renderState(GlobalState.Error(errorMessage))
+
+                            Log.d("----",errorMessage)
                         }
                     }
                 }
@@ -94,19 +98,19 @@ class OneWaifuViewModel(context: Context): ViewModel() {
         stateLiveData.postValue(state)
     }
 
-    fun addToFavorite() {
-        val result = favoriteInteractor.validation(imgUrl[0])
-
-        when (result) {
-            is Resource.Error -> {
-                toastLiveData.postValue(result.message)
-            }
-
-            is Resource.Success -> {
-                toastLiveData.postValue(result.data)
-                addToFavoriteLivedata.postValue(imgUrl)
-            }
-        }
-    }
+//    fun addToFavorite() {
+//        val result = favoriteInteractor.validation(imgUrl[0])
+//
+//        when (result) {
+//            is Resource.Error -> {
+//                toastLiveData.postValue(result.message)
+//            }
+//
+//            is Resource.Success -> {
+//                toastLiveData.postValue(result.data)
+//                addToFavoriteLivedata.postValue(imgUrl)
+//            }
+//        }
+//    }
 
 }

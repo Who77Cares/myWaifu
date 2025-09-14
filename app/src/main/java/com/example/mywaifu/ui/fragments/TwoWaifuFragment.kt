@@ -83,9 +83,7 @@ class TwoWaifuFragment: Fragment() {
     private fun showError(message: String) {
         binding.progressBar2.visibility = View.VISIBLE
         binding.manyWaifuRecycleView.visibility = View.INVISIBLE
-
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
-
     }
 
     private fun showLading() {

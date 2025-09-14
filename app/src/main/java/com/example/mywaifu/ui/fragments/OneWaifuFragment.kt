@@ -91,9 +91,9 @@ class OneWaifuFragment: Fragment() {
 
 
 
-        binding.addToFavoriteButton.setOnClickListener {
-            viewModel?.addToFavorite()
-        }
+//        binding.addToFavoriteButton.setOnClickListener {
+//            viewModel?.addToFavorite()
+//        }
 
 
 //        binding.goToFavoriteButton.setOnClickListener {
