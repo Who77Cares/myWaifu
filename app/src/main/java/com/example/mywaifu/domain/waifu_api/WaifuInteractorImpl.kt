@@ -15,6 +15,8 @@ class WaifuInteractorImpl(
         singleImg: Boolean,
         consumer: WaifuInteractor.WaifuConsumer
     ) {
+
+
         executor.execute {
 
             val resource = if (singleImg) {
